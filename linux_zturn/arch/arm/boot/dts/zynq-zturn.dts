@@ -1,0 +1,198 @@
+/*
+ *  Copyright (C) 2011 - 2014 Xilinx
+ *  Copyright (C) 2012 National Instruments Corp.
+ *
+ * This software is licensed under the terms of the GNU General Public
+ * License version 2, as published by the Free Software Foundation, and
+ * may be copied, distributed, and modified under those terms.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+/dts-v1/;
+/include/ "zynq-7000.dtsi"
+
+
+/ {
+	model = "MYIR Z-turn Development Board";
+	compatible = "myir,zynq-zturn", "xlnx,zynq-7000";
+
+	aliases {
+		ethernet0 = &gem0;
+		serial0 = &uart1;
+		serial1 = &uart0;
+		spi0 = &qspi;
+	};
+
+	memory {
+		device_type = "memory";
+		reg = <0x0 0x3F000000>; // Reserved 256MB for xylonfb driver
+	};
+
+	chosen {
+		bootargs = "console=ttyPS0,115200 root=/dev/ram rw earlyprintk";
+		linux,stdout-path = "/amba/serial@e0001000";
+    #address-cells = <0x1>;
+    #size-cells = <0x1>;
+    ranges;
+    framebuffer0: framebuffer@3F000000 {
+            compatible = "simple-framebuffer";
+            reg = <0x3F000000 (1920*1080*4)>;
+            width = <1920>;
+            height = <1080>;
+            stride = <(1920*4)>;
+            format = "a8r8g8b8";
+            status = "okay";
+    };
+	};
+};
+
+&gpio0 {
+    emio-gpio-width = <64>;
+    gpio-mask-high = <0x0>;
+    gpio-mask-low = <0x5600>;
+    xlnx,emio-gpio-width = <0x40>;
+    xlnx,mio-gpio-mask = <0x5600>;
+};
+
+&qspi {
+	status = "okay";
+	is-dual = <0>;
+	num-cs = <1>;
+	xlnx,fb-clk = <0x1>;
+	xlnx,qspi-mode = <0x0>;
+	flash@0 {
+		compatible = "n25q128";
+		reg = <0x0>;
+		spi-tx-bus-width = <1>;
+		spi-rx-bus-width = <4>;
+		spi-max-frequency = <50000000>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		partition@qspi-boot {
+			label = "qspi-boot";
+			reg = <0x0 0x080000>;
+		};
+		partition@qspi-bootenv {
+			label = "qspi-bootenv";
+			reg = <0x080000 0x020000>;
+		};
+		partition@qspi-bitstream {
+			label = "qspi-bitstream";
+			reg = <0x0A0000 0x460000>;
+		};
+		partition@qspi-kernel {
+			label = "qspi-kernel";
+			reg = <0x500000 0x480000>;
+		};
+		partition@qspi-devicetree {
+			label = "qspi-devicetree";
+			reg = <0x980000 0x010000>;
+		};
+		partition@qspi-rootfs {
+			label = "qspi-rootfs";
+			reg = <0x990000 0x600000>;
+		};
+		partition@qspi-data {
+			label = "data";
+			reg = <0xF90000 0x070000>;
+		};
+	};
+};
+
+&usb0 {
+	status = "okay";
+	dr_mode = "host";
+	phy_type = "ulpi";
+};
+
+&gem0 {
+    compatible = "cdns,gem";
+    reg = <0xe000b000 0x4000>;
+    status = "okay";
+    interrupts = <0 22 4>;
+    interrupt-parent = <&intc>;
+    clocks = <&clkc 30>, <&clkc 30>, <&clkc 13>;
+    clock-names = "pclk", "hclk", "tx_clk";
+    phy-mode = "rgmii-id";
+    phy-handle = <&phy0>;
+    phy0: phy@0 {
+        compatible = "atheros,ar8035";
+        device_type = "ethernet-phy";
+        reg = <0>;
+    };
+};
+
+&sdhci0 {
+	status = "okay";
+    xlnx,has-cd = <0x1>;
+    xlnx,has-power = <0x0>;
+    xlnx,has-wp = <0x1>;
+};
+
+&uart0 {
+	status = "okay";
+    current-speed = <115200>;
+    port-number = <1>;
+    xlnx,has-modem = <0x0>;
+};
+
+&uart1 {
+	status = "okay";
+    current-speed = <115200>;
+    port-number = <0>;
+    xlnx,has-modem = <0x0>;
+};
+
+&i2c0 {
+	status = "okay";
+//  bus-id = <0x0>;
+    clock-frequency = <400000>;
+    xlnx,has-interrupt = <0x1>;
+
+    adxl345@53 {
+        compatible = "adi,adxl34x","adxl34x";
+        reg = <0x53>;
+        interrupt-parent = <&intc>;
+        interrupts = < 0 31 4 >;
+    };
+
+    sii902x@3b {
+        compatible = "sii902x";
+        reg = <0x3b>;
+        interrupt-parent = <&intc>;
+        interrupts = < 0 29 4 >;
+		mode_str = "1920x1080";
+		bits-per-pixel = <16>;
+    };
+
+	stlm75@49 {
+		status = "okay";
+		compatible = "myir-stlm75x";
+		reg = <0x49>;
+		interrupts = < 0 32 4 >;
+	};
+};
+
+/*
+&i2c1 {
+	status = "okay";
+    clock-frequency = <400000>;
+    xlnx,has-interrupt = <0x1>;
+
+	ft0x5x_ts@38 {
+        compatible = "ft5x06_ts";
+        reg = <0x38>;
+        tp_int = <&gpio0 106 1>;
+        tp_resetn = <&gpio0 107 1>;
+	    polling_mode = /bits/ 8 <0>;
+        multi_touch = /bits/ 8 <0>;
+    };
+};
+*/
+
+&can0 {
+	status = "okay";
+};
