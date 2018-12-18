@@ -1,0 +1,7 @@
+//arch = zynq; split = false; format = BIN
+the_ROM_image:
+{
+	[bootloader]/tools/work/linux_zynq/linux_zturn/fsblk.elf
+	/tools/work/linux_zynq/linux_zturn/design_1_wrapper.bit
+	/tools/work/linux_zynq/linux_zturn/u-boot.elf
+}
