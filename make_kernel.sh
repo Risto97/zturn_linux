@@ -1,5 +1,5 @@
 #!/bin/sh
-# cp -r linux_zturn/* linux-xlnx/
+cp -r linux_zturn/* linux-xlnx/
 cp vivado_prj/vivado_prj/vivado_prj.sdk/device_tree_bsp_0/pcw.dtsi linux-xlnx/arch/arm/boot/dts/
 cp vivado_prj/vivado_prj/vivado_prj.sdk/device_tree_bsp_0/zynq-7000.dtsi linux-xlnx/arch/arm/boot/dts/
 cp vivado_prj/vivado_prj/vivado_prj.sdk/device_tree_bsp_0/pl.dtsi linux-xlnx/arch/arm/boot/dts/
