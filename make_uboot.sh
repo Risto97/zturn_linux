@@ -3,6 +3,10 @@ corenum=$(grep -c ^processor /proc/cpuinfo)
 echo "Running make with: " $corenum " threads"
 
 cp vivado_prj/vivado_prj/vivado_prj.sdk/design_1_wrapper_hw_platform_0/ps7_init_gpl.c u-boot_zturn/board/xilinx/zynq/zynq_zturn/
+cp vivado_prj/vivado_prj/vivado_prj.sdk/device_tree_bsp_0/pcw.dtsi u-boot-xlnx/arch/arm/dts/
+cp vivado_prj/vivado_prj/vivado_prj.sdk/device_tree_bsp_0/zynq-7000.dtsi u-boot-xlnx/arch/arm/dts/
+cp vivado_prj/vivado_prj/vivado_prj.sdk/device_tree_bsp_0/pl.dtsi u-boot-xlnx/arch/arm/dts/
+cp vivado_prj/vivado_prj/vivado_prj.sdk/device_tree_bsp_0/system-top.dts u-boot-xlnx/arch/arm/dts/zynq-zturn-myir.dts
 cp -r u-boot_zturn/* u-boot-xlnx/
 
 rm u-boot-xlnx/u-boot.elf
