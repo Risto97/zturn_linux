@@ -5,6 +5,7 @@ echo "Running make with: " $corenum " threads"
 # sdk_dir=$(vivado_prj/hdmi_prj/z-turn.sdk)
 # bitstream_dir=$sdk_dir/hdmi_out_wrapper_hw_platform_0
 
+mkdir -p u-boot_zturn/board/xilinx/zynq/zynq_zturn/
 cp vivado_prj/hdmi_prj/hdmi_prj.sdk/hdmi_out_wrapper_hw_platform_0/ps7_init_gpl.c u-boot_zturn/board/xilinx/zynq/zynq_zturn/
 cp vivado_prj/hdmi_prj/hdmi_prj.sdk/device_tree_bsp_0/pcw.dtsi u-boot-xlnx/arch/arm/dts/
 cp vivado_prj/hdmi_prj/hdmi_prj.sdk/device_tree_bsp_0/zynq-7000.dtsi u-boot-xlnx/arch/arm/dts/
