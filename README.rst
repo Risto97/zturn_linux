@@ -20,3 +20,27 @@ SDK Menu: Xilinx > Repositories > New... (< devicetree_git path>) > OK
 
 In SDK:
 SDK Menu: File > New > Board Support Package > Under Board Support Package OS, select device_tree > finish
+
+**Modify devicetree files for framebuffer**
+
+In file system-top.dtsi
+
+in section chosen{} after stdout-path = "serial0:115200n8"; append
+
+.. code-block:: bash
+
+
+   #address-cells = <0x1>;
+   #size-cells = <0x1>;
+   ranges;
+   framebuffer0: framebuffer@3F000000 {
+                compatible = "simple-framebuffer";
+                reg = <0x3F000000 (1920*1080*4)>;
+                width = <1920>;
+                height = <1080>;
+                stride = <(1920*4)>;
+                format = "a8r8g8b8";
+                status = "okay";
+   };
+
+In section memory{}, change from reg = <0x0 0x40000000>; to reg = <0x0 0x3F000000>;
