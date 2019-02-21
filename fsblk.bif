@@ -1,7 +1,7 @@
 //arch = zynq; split = false; format = BIN
 the_ROM_image:
 {
-	[bootloader]vivado_prj/hdmi_prj/hdmi_prj.sdk/fsbl/Debug/fsbl.elf
-	vivado_prj/hdmi_prj/hdmi_prj.runs/impl_1/hdmi_out_wrapper.bit
-	u-boot-xlnx/u-boot.elf
+	[bootloader]bin_sources/fsbl.elf
+	bin_sources/hdmi_out_wrapper.bit
+	bin_sources/u-boot.elf
 }
