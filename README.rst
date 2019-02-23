@@ -11,6 +11,31 @@ This guide will provide explanations on how to compile U-Boot, Linux Kernel and 
 
    ./clone_gits.sh
 
+**Export hardware and launch SDK**
+
+In Vivado: File > Export > Export Hardware > Check Include Bitstream > OK
+In Vivado: File > Launch SDK
+
+**Create FSBL**
+
+In SDK: File > New > Application Project
+Project Name: fsbl
+OS Platform: standalone
+HW platform: (select exported platform name**
+
+> Next
+Select Zynq FSBL
+> Finish
+
+**Import video configuration files into FSBL**
+
+in FSBL src, right click import > General > File System.
+
+Select fsbl/src from git folder. And import fsbl_hooks.c display_init/ sii0922_init/
+
+Check Overwrite existing resources without warning. > Finish
+
+
 **Add devicetree_generator to Xilinx SDK**
 
 In SDK:
